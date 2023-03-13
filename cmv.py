@@ -292,8 +292,32 @@ def lic_11(parameters, points):
     return False
 
 def lic_12(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether or not there exists at least one pair of points separated by [k_pts] consecutive points that are a distance 
+    greater than [length1] apart AND at least one pair of points separated by [k_pts] consecutive points that are less than [length2]
+    apart
+    """
+    if len(points) < 3:
+        return False
+    
+    length1 = parameters["length1"]
+    length2 = parameters["length2"]
+    k_pts = parameters["k_pts"]
+
+    length1_true = False
+    length2_true = False
+
+    for i in range(len(points)-(k_pts+1)):
+        p1 = points[i]
+        p2 = points[i+k_pts+1]
+        
+        if dist(p1, p2) > length1:
+            length1_true = True
+
+        if dist(p1, p2) < length2:
+            length2_true = True
+
+    return length1_true and length2_true
 
 def lic_13(parameters, points):
     """
