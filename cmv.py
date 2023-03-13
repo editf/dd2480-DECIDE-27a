@@ -221,8 +221,29 @@ def lic_9(parameters, points):
     pass
 
 def lic_10(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether or not there exists one set of three points separated by exactly [e_pts]
+    and [f_pts] consecutive points that form a triangle with area greater than [area1]
+    """
+    e_pts = parameters["e_pts"]
+    f_pts = parameters["f_pts"]
+    area1 = parameters["area1"]
+
+    if len(points) < 5:
+        return False
+    
+    for i in range(len(points)-(e_pts+f_pts+2)):
+        p1 = points[i]
+        p2 = points[i+e_pts+1]
+        p3 = points[i+e_pts+f_pts+2]
+        a = dist(p1, p2)
+        b = dist(p1, p3)
+        c = dist(p2, p3)
+        s = (a+b+c)/2
+        area = sqrt(s*(s-a)*(s-b)*(s-c)) # Heron's formula
+        if area > area1:
+            return True
+    return False
 
 def lic_11(parameters, points):
     # TODO: Implement
