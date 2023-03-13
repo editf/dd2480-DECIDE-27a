@@ -446,7 +446,7 @@ def test_lic_7_too_few_points():
     points = [(0.0, 0.0), (-1.0, -1.0)]
     result = lic_7(parameters, points)
     assert not result
-
+    
 def test_lic_8_true():
     """
     Tests that lic_8 returns true when three points with A_PTS and B_PTS consecutive intervening points
@@ -515,6 +515,47 @@ def test_lic_8_too_few_points():
     points = [(0.0, 0.0), (-1.0, -2.0), (3.0, 0.0), (1.0, 2.0)]
     result = lic_8(parameters, points)
     assert(not result)
+
+def test_lic_10_true():
+    """
+    Tests that lic_10 returns true when there exists a set of three points separated by [e_pts] and [f_pts]
+    consecutive points that form a triangle with area greater than area1
+    """
+    parameters = {
+        "area1": 1,
+        "e_pts": 2,
+        "f_pts": 1
+    }
+    points = [(1.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 1.0), (2.0, 0.0), (1.0, 1.0), (0.0, 2.0)]
+    result = lic_10(parameters, points)
+    assert result
+
+def test_lic_10_false():
+    """
+    Tests that lic_10 returns false when there is no set of three points separated by [e_pts] and [f_pts] consecutive points
+    that form a triangle with area greater than area1
+    """
+    parameters = {
+        "area1": 10,
+        "e_pts": 2,
+        "f_pts": 1
+    }
+    points = [(0.0, 0.0), (1.0, 1.0), (1.0, 1.0), (2.0, 0.0), (1.0, 1.0), (0.0, 2.0)]
+    result = lic_10(parameters, points)
+    assert not result
+
+def test_lic_10_too_few_points():
+    """
+    Tests that lic_10 returns false when there are less than 5 points provided
+    """
+    parameters = {
+        "area1": 10,
+        "e_pts": 2,
+        "f_pts": 1
+    }
+    points = [(0.0, 0.0), (1.0, 1.0)]
+    result = lic_10(parameters, points)
+    assert not result
 
 def test_lic_11_true():
     """
