@@ -213,8 +213,42 @@ def lic_7(parameters, points):
     return False
 
 def lic_8(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether any three points with A_PTS and B_PTS consecutive intervening points cannot all be contained in a circle with radius RADIUS1
+    """
+    if len(points) < 5:
+        return False
+    a_pts = parameters["a_pts"]
+    b_pts = parameters["b_pts"]
+    radius1 = parameters["radius1"]
+    for i in range(len(points) - 2 - a_pts - b_pts):
+        p1 = points[i]
+        p2 = points[i+1+a_pts]
+        p3 = points[i+2+a_pts+b_pts]
+
+        a = dist(p1, p2)
+        b = dist(p1, p3)
+        c = dist(p2, p3)
+
+        # Semi-perimeter
+        s = (a+b+c)/2
+
+        # Heron's formula
+        area = sqrt(s*(s-a)*(s-b)*(s-c))
+
+        # If the area is zero, then the triangle is degenerate, i.e. a+b=c for a≤b≤c
+        if area == 0.0:
+            if max(a, b, c) > 2*radius1:
+                return True
+            else:
+                continue
+
+        # All other triangles
+        circumradius = a*b*c/(4*area)
+
+        if circumradius > radius1:
+            return True
+    return False
 
 def lic_9(parameters, points):
     # TODO: Implement
@@ -246,8 +280,16 @@ def lic_10(parameters, points):
     return False
 
 def lic_11(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether there exists two points (x1, y1) (x2, y2) separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    if len(points) < 3:
+        return False
+    g_pts = parameters["g_pts"]
+    for i in range(0, len(points) - 1 - g_pts):
+        if points[i+1+g_pts][0] - points[i][0] < 0:
+            return True
+    return False
 
 def lic_12(parameters, points):
     # TODO: Implement
@@ -302,5 +344,37 @@ def lic_13(parameters, points):
     return helper(radius1) and helper(radius2)
 
 def lic_14(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot all be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA2
+    If they are, return true. If they are not, return false.
+    """
+    if len(points) < 5:
+        return False
+    e_pts = parameters["e_pts"]
+    f_pts = parameters["f_pts"]
+    area1 = parameters["area1"]
+    area2 = parameters["area2"]
+    def helper(max_area):
+        """
+        Checks whether any three points with E_PTS and F_PTS consecutive intervening points
+        cannot all be contained in a triangle with the specified area
+        """
+        for i in range(len(points) - 2 - e_pts - f_pts):
+            p1 = points[i]
+            p2 = points[i+1+e_pts]
+            p3 = points[i+2+e_pts+f_pts]
+
+            a = dist(p1, p2)
+            b = dist(p1, p3)
+            c = dist(p2, p3)
+
+            # Semi-perimeter
+            s = (a+b+c)/2
+
+            # Heron's formula
+            area = sqrt(s*(s-a)*(s-b)*(s-c))
+
+            return area > max_area
+    return helper(area1) and not helper(area2)

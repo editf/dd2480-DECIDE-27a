@@ -446,6 +446,75 @@ def test_lic_7_too_few_points():
     points = [(0.0, 0.0), (-1.0, -1.0)]
     result = lic_7(parameters, points)
     assert not result
+    
+def test_lic_8_true():
+    """
+    Tests that lic_8 returns true when three points with A_PTS and B_PTS consecutive intervening points
+    cannot all be contained in a circle with radius RADIUS1
+    """
+    parameters = {
+        "radius1": 1.0,
+        "a_pts": 1,
+        "b_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -2.0), (5.0, 0.0), (1.0, 2.0), (0.0, 5.0)]
+    result = lic_8(parameters, points)
+    assert(result)
+
+def test_lic_8_false():
+    """
+    Tests that lic_8 returns false when three points with A_PTS and B_PTS consecutive intervening points
+    can all be contained in a circle with radius RADIUS1
+    """
+    parameters = {
+        "radius1": 10.0,
+        "a_pts": 2,
+        "b_pts": 1
+    }
+    points = [(1.0, 1.0), (-1.0, -2.0), (0.0, 0.0), (3.0, 1.0), (1.0, 2.0), (3.0, 1.0)]
+    result = lic_8(parameters, points)
+    assert(not result)
+
+def test_lic_8_degenerate_triangle_true():
+    """
+    Tests that lic_8 returns true if three points with A_PTS and B_PTS consecutive intervening points that
+    form a degenerate triangle (i.e. a+b=c for a≤b≤c) cannot all be contained in a circle with radius RADIUS1
+    """
+    parameters = {
+        "radius1": 2.9,
+        "a_pts": 1,
+        "b_pts": 2
+    }
+    points = [(0.0, 0.0), (-2.0, -7.0), (3.0, 0.0), (0.0, 3.0), (1.0, 4.0), (-3.0, 0.0)]
+    result = lic_8(parameters, points)
+    assert(result)
+
+def test_lic_8_degenerate_triangle_false():
+    """
+    Tests that lic_8 returns false if three points with A_PTS and B_PTS consecutive intervening points that
+    form a degenerate triangle (i.e. a+b=c for a≤b≤c) can be contained in a circle with radius RADIUS1
+    """
+    parameters = {
+        "radius1": 3.0,
+        "a_pts": 1,
+        "b_pts": 2
+    }
+    points = [(0.0, 0.0), (-2.0, -7.0), (3.0, 0.0), (0.0, 3.0), (1.0, 4.0), (-3.0, 0.0)]
+    result = lic_8(parameters, points)
+    assert(not result)
+
+def test_lic_8_too_few_points():
+    """
+    Tests that lic_8 returns false when there are less than 5 points
+    """
+    parameters = {
+        "radius1": 0.0,
+        "a_pts": 0,
+        "b_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -2.0), (3.0, 0.0), (1.0, 2.0)]
+    result = lic_8(parameters, points)
+    assert(not result)
 
 def test_lic_10_true():
     """
@@ -487,6 +556,41 @@ def test_lic_10_too_few_points():
     points = [(0.0, 0.0), (1.0, 1.0)]
     result = lic_10(parameters, points)
     assert not result
+
+def test_lic_11_true():
+    """
+    Tests that lic_11 returns true when there exists two points (x1, y1) (x2, y2)
+    separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    parameters = {
+        "g_pts": 2
+    }
+    points = [(1.0, 0.0), (5.0, 5.0), (-1.0, 0.0), (0.0, 0.0)]
+    result = lic_11(parameters, points)
+    assert(result)
+
+def test_lic_11_false():
+    """
+    Tests that lic_11 returns false when there are no points (x1, y1) (x2, y2)
+    separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    parameters = {
+        "g_pts": 3
+    }
+    points = [(0.0, 1.0), (3.0, 5.0), (-1.0, 0.0), (-1.0, 0.0), (6.0, 0.0)]
+    result = lic_11(parameters, points)
+    assert(not result)
+
+def test_lic_11_too_few_points():
+    """
+    Tests that lic_11 returns false if there are fewer than 3 points
+    """
+    parameters = {
+        "g_pts": 1
+    }
+    points = [(0.0, 1.0), (1.0, 2.0)]
+    result = lic_11(parameters, points)
+    assert(not result)
 
 def test_lic_13_true():
     """
@@ -533,4 +637,64 @@ def test_lic_13_false_2():
     }
     points = [(2.0, 0.0), (0.0, 0.0), (0.0, 0.0), (25.0, 25.0), (0.0, 2.0), (0.0, 0.0), (3.0, 0.0)]
     result = lic_13(parameters, points)
+    assert(not result)
+
+def test_lic_14_true():
+    """
+    Tests that lic_14 returns true if both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot all be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA2
+    """
+    parameters = {
+        "area1": 0.5,
+        "area2": 2.0,
+        "e_pts": 1,
+        "f_pts": 1
+    }
+    points = [(3.0, 1.0), (0.0, 0.0), (1.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(result)
+
+def test_lic_14_false_1():
+    """
+    Tests that lic_14 returns false if three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA1
+    """
+    parameters = {
+        "area1": 2.0,
+        "area2": 3,
+        "e_pts": 2,
+        "f_pts": 2
+    }
+    points = [(2.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (5.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(not result)
+
+def test_lic_14_false_2():
+    """
+    Tests that lic_14 returns false if both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot be contained in a triangle with area AREA2
+    """
+    parameters = {
+        "area1": 2.0,
+        "area2": 0.0,
+        "e_pts": 0,
+        "f_pts": 2
+    }
+    points = [(2.0, 1.0), (1.0, 2.0), (5.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(not result)
+
+def test_lic_14_too_few_points():
+    """
+    Tests that lic_14 returns false if there are fewer than 5 points
+    """
+    parameters = {
+        "area1": 0.0,
+        "area2": 0.0,
+        "e_pts": 0,
+        "f_pts": 1
+    }
+    points = [(-3.0, -1.0), (-1.0, -3.0), (0.0, 0.0), (-1.0, -1.0)]
+    result = lic_14(parameters, points)
     assert(not result)
