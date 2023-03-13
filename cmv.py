@@ -213,8 +213,42 @@ def lic_7(parameters, points):
     return False
 
 def lic_8(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether any three points with A_PTS and B_PTS consecutive intervening points cannot all be contained in a circle with radius RADIUS1
+    """
+    if len(points) < 5:
+        return False
+    a_pts = parameters["a_pts"]
+    b_pts = parameters["b_pts"]
+    radius1 = parameters["radius1"]
+    for i in range(len(points) - 2 - a_pts - b_pts):
+        p1 = points[i]
+        p2 = points[i+1+a_pts]
+        p3 = points[i+2+a_pts+b_pts]
+
+        a = dist(p1, p2)
+        b = dist(p1, p3)
+        c = dist(p2, p3)
+
+        # Semi-perimeter
+        s = (a+b+c)/2
+
+        # Heron's formula
+        area = sqrt(s*(s-a)*(s-b)*(s-c))
+
+        # If the area is zero, then the triangle is degenerate, i.e. a+b=c for a≤b≤c
+        if area == 0.0:
+            if max(a, b, c) > 2*radius1:
+                return True
+            else:
+                continue
+
+        # All other triangles
+        circumradius = a*b*c/(4*area)
+
+        if circumradius > radius1:
+            return True
+    return False
 
 def lic_9(parameters, points):
     # TODO: Implement
