@@ -528,3 +528,63 @@ def test_lic_13_false_2():
     points = [(2.0, 0.0), (0.0, 0.0), (0.0, 0.0), (25.0, 25.0), (0.0, 2.0), (0.0, 0.0), (3.0, 0.0)]
     result = lic_13(parameters, points)
     assert(not result)
+
+def test_lic_14_true():
+    """
+    Tests that lic_14 returns true if both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot all be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA2
+    """
+    parameters = {
+        "area1": 0.5,
+        "area2": 2.0,
+        "e_pts": 1,
+        "f_pts": 1
+    }
+    points = [(3.0, 1.0), (0.0, 0.0), (1.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(result)
+
+def test_lic_14_false_1():
+    """
+    Tests that lic_14 returns false if three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA1
+    """
+    parameters = {
+        "area1": 2.0,
+        "area2": 3,
+        "e_pts": 2,
+        "f_pts": 2
+    }
+    points = [(2.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 2.0), (5.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(not result)
+
+def test_lic_14_false_2():
+    """
+    Tests that lic_14 returns false if both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot be contained in a triangle with area AREA2
+    """
+    parameters = {
+        "area1": 2.0,
+        "area2": 0.0,
+        "e_pts": 0,
+        "f_pts": 2
+    }
+    points = [(2.0, 1.0), (1.0, 2.0), (5.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(not result)
+
+def test_lic_14_too_few_points():
+    """
+    Tests that lic_14 returns false if there are fewer than 5 points
+    """
+    parameters = {
+        "area1": 0.0,
+        "area2": 0.0,
+        "e_pts": 0,
+        "f_pts": 1
+    }
+    points = [(-3.0, -1.0), (-1.0, -3.0), (0.0, 0.0), (-1.0, -1.0)]
+    result = lic_14(parameters, points)
+    assert(not result)

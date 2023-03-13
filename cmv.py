@@ -289,5 +289,37 @@ def lic_13(parameters, points):
     return helper(radius1) and helper(radius2)
 
 def lic_14(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether both the following conditions are true:
+    - any three points with E_PTS and F_PTS consecutive intervening points cannot all be contained in a triangle with area AREA1
+    - any three points with E_PTS and F_PTS consecutive intervening points can be contained in a triangle with area AREA2
+    If they are, return true. If they are not, return false.
+    """
+    if len(points) < 5:
+        return False
+    e_pts = parameters["e_pts"]
+    f_pts = parameters["f_pts"]
+    area1 = parameters["area1"]
+    area2 = parameters["area2"]
+    def helper(max_area):
+        """
+        Checks whether any three points with E_PTS and F_PTS consecutive intervening points
+        cannot all be contained in a triangle with the specified area
+        """
+        for i in range(len(points) - 2 - e_pts - f_pts):
+            p1 = points[i]
+            p2 = points[i+1+e_pts]
+            p3 = points[i+2+e_pts+f_pts]
+
+            a = dist(p1, p2)
+            b = dist(p1, p3)
+            c = dist(p2, p3)
+
+            # Semi-perimeter
+            s = (a+b+c)/2
+
+            # Heron's formula
+            area = sqrt(s*(s-a)*(s-b)*(s-c))
+
+            return area > max_area
+    return helper(area1) and not helper(area2)
