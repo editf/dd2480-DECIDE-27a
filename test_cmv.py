@@ -447,6 +447,73 @@ def test_lic_7_too_few_points():
     result = lic_7(parameters, points)
     assert not result
 
+def test_lic_12_true():
+    """
+    Tests that lic_12 returns true when there is a pair of points separated by [k_pts] that are more than [length1] units apart,
+    and a set of points separated by [k_pts] that are less than [length2] apart
+    """
+    parameters = {
+        "length1": 1,
+        "length2": 2,
+        "k_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (0.0, 0.0)]
+    result = lic_12(parameters, points)
+    assert result
+
+def test_lic_12_true_same_points():
+    """
+    Tests that lic_12 returns true when the same set of points are at a distance greater than [length1]
+    and smaller than [length2] apart
+    """
+    parameters = {
+        "length1": 1,
+        "length2": 3,
+        "k_pts": 2
+    }
+    points = [(0.0, 0.0), (-1.0, -1.0), (-1.0, -1.0), (2.0, 0.0)]
+    result = lic_12(parameters, points)
+    assert result
+
+def test_lic_12_false_length1_not_met():
+    """
+    Tests that lic_12 returns false when there is a set of points that fulfill the condition on [length2] but not [length1]
+    """
+    parameters = {
+        "length1": 10,
+        "length2": 3,
+        "k_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (1.0, 1.0)]
+    result = lic_12(parameters, points)
+    assert not result
+
+def test_lic_12_false_length2_not_met():
+    """
+    Tests that lic_12 returns false when there is a set of points that fulfill the condition on [length1] but not [length2]
+    """
+    parameters = {
+        "length1": 0.5,
+        "length2": 0.1,
+        "k_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (1.0, 1.0)]
+    result = lic_12(parameters, points)
+    assert not result
+
+def test_lic_12_false_too_few_points():
+    """
+    Tests that lic_12 returns false when there are less than 3 points
+    """
+    parameters = {
+        "length1": 1,
+        "length2": 3,
+        "k_pts": 1
+    }
+    points = [(0.0, 0.0), (-1.0, -1.0)]
+    result = lic_12(parameters, points)
+    assert not result
+
 def test_lic_13_true():
     """
     Tests that lic_13 returns true if both the following conditions are true:
