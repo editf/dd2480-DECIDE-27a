@@ -447,6 +447,41 @@ def test_lic_7_too_few_points():
     result = lic_7(parameters, points)
     assert not result
 
+def test_lic_11_true():
+    """
+    Tests that lic_11 returns true when there exists two points (x1, y1) (x2, y2)
+    separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    parameters = {
+        "g_pts": 2
+    }
+    points = [(1.0, 0.0), (5.0, 5.0), (-1.0, 0.0), (0.0, 0.0)]
+    result = lic_11(parameters, points)
+    assert(result)
+
+def test_lic_11_false():
+    """
+    Tests that lic_11 returns false when there are no points (x1, y1) (x2, y2)
+    separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    parameters = {
+        "g_pts": 3
+    }
+    points = [(0.0, 1.0), (3.0, 5.0), (-1.0, 0.0), (-1.0, 0.0), (6.0, 0.0)]
+    result = lic_11(parameters, points)
+    assert(not result)
+
+def test_lic_11_too_few_points():
+    """
+    Tests that lic_11 returns false if there are fewer than 3 points
+    """
+    parameters = {
+        "g_pts": 1
+    }
+    points = [(0.0, 1.0), (1.0, 2.0)]
+    result = lic_11(parameters, points)
+    assert(not result)
+
 def test_lic_13_true():
     """
     Tests that lic_13 returns true if both the following conditions are true:

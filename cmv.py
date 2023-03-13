@@ -225,8 +225,16 @@ def lic_10(parameters, points):
     pass
 
 def lic_11(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether there exists two points (x1, y1) (x2, y2) separated by exactly G_PTS consecutive points such that x2 - x1 < 0
+    """
+    if len(points) < 3:
+        return False
+    g_pts = parameters["g_pts"]
+    for i in range(0, len(points) - 1 - g_pts):
+        if points[i+1+g_pts][0] - points[i][0] < 0:
+            return True
+    return False
 
 def lic_12(parameters, points):
     # TODO: Implement
