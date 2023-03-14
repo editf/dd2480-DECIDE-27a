@@ -1,5 +1,5 @@
 from math import pi
-from cmv import *
+from src.cmv import *
 
 def test_cmv():
     """""
