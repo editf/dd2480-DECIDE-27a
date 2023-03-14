@@ -516,6 +516,72 @@ def test_lic_8_too_few_points():
     result = lic_8(parameters, points)
     assert(not result)
 
+def test_lic_9_true():
+    """
+    Tests that lic_9 returns true when there is a set of three points separated by [c_pts] and [d_pts] consecutive points
+    that form an angle that is smaller than pi - [epsilon]
+    """
+    parameters = {
+        "c_pts": 1,
+        "d_pts": 1,
+        "epsilon": pi/4
+    }
+    points = [(0.0, 1.0), (-1.0, -1.0), (0.0, 0.0), (-1.0, -1.0), (1.0, 0.0)] # pi/2 angle
+    result = lic_9(parameters, points)
+    assert result
+
+def test_lic_9_false():
+    """
+    Tests that lic_9 returns false when there is no set of points that form an angle smaller than pi - [epsilon]
+    """
+    parameters = {
+        "c_pts": 1,
+        "d_pts": 1,
+        "epsilon": 3*pi/4
+    }
+    points = [(0.0, 1.0), (-1.0, -1.0), (0.0, 0.0), (-1.0, -1.0), (1.0, 0.0)] # pi/2 angle
+    result = lic_9(parameters, points)
+    assert not result
+
+def test_lic_9_false_coinciding_point1():
+    """
+    Tests that lic_9 returns false when the first point coincides with the vertex
+    """
+    parameters = {
+            "c_pts": 2,
+            "d_pts": 1,
+            "epsilon": pi/2
+        }
+    points = [(0.0, 0.0), (-1.0, -1.0), (-1.0, -1.0), (0.0, 0.0), (-1.0, -1.0), (2.0, 2.0)]
+    result = lic_9(parameters, points)
+    assert not result
+
+def test_lic_9_false_coinciding_point2():
+    """
+    Tests that lic_9 returns false when the second point coincides with the vertex
+    """
+    parameters = {
+            "c_pts": 2,
+            "d_pts": 1,
+            "epsilon": pi/2
+        }
+    points = [(0.0, 1.0), (-1.0, -1.0), (-1.0, -1.0), (0.0, 0.0), (-1.0, -1.0), (0.0, 0.0)]
+    result = lic_9(parameters, points)
+    assert not result
+
+def test_lic_9_false_too_few_points():
+    """
+    Tests that lic_9 returns false when there are less than 5 points
+    """
+    parameters = {
+            "c_pts": 1,
+            "d_pts": 1,
+            "epsilon": pi/4
+        }
+    points = [(0.0, 1.0), (-1.0, -1.0), (0.0, 0.0)] 
+    result = lic_9(parameters, points)
+    assert not result
+
 def test_lic_10_true():
     """
     Tests that lic_10 returns true when there exists a set of three points separated by [e_pts] and [f_pts]

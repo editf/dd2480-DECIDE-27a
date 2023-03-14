@@ -1,4 +1,4 @@
-from math import sqrt, acos, pi, dist
+from math import sqrt, acos, pi, dist, hypot
 
 def cmv(parameters, points):
     cmv = [False] * 15
@@ -251,8 +251,44 @@ def lic_8(parameters, points):
     return False
 
 def lic_9(parameters, points):
-    # TODO: Implement
-    pass
+    """
+    Checks whether or not there exists at least one set of three points, separated by [c_pts] and [d_pts] consecutive points,
+    that form an angle that is either < pi - epsilon or > pi + epsilon. The middle point is the vertex of the angle and the condition
+    is not fulfilled if any of the other points of the angle coincide with the vertex. 
+    """
+    if len(points) < 5:
+        return False
+    
+    epsilon = parameters["epsilon"]
+    c_pts = parameters["c_pts"]
+    d_pts = parameters["d_pts"]
+
+    for i in range(len(points) - (c_pts + d_pts + 2)):
+        p1 = points[i]
+        p2 = points[i+c_pts+1] # vertex
+        p3 = points[i+c_pts+d_pts+2]
+
+        a = (p1[0] - p2[0], p1[1] - p2[1])
+        b = (p3[0] - p2[0], p3[1] - p2[1])
+
+        len_a = hypot(*a)
+        len_b = hypot(*b)
+
+        if len_a == 0 or len_b == 0: # point(s) coincide with vertex
+            continue
+
+        tmp = (a[0]*b[0] + a[1]*b[1]) / (len_a*len_b)
+
+        # avoid acos domain errors due to float accuracy
+        if abs(tmp - 1) < 1e-5:
+            tmp = 1.0
+        if abs(tmp + 1) < 1e-5:
+            tmp = -1.0
+
+        angle = acos(tmp) # if the points lie on a straight line, the angle will be considered to be 0
+        if angle < pi - epsilon: # equivalent to alternative angle > pi + epsilon
+            return True
+    return False
 
 def lic_10(parameters, points):
     """
