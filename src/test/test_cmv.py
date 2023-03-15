@@ -832,6 +832,19 @@ def test_lic_14_too_few_points():
     result = lic_14(parameters, points)
     assert(not result)
 
+def test_lic_14_true_helper_loop():
+    """
+    Tests that the helper loop for lic_14 is run more than once (i.e. can find solutions that are not at the beginning of the list of points)
+    """
+    parameters = {
+        "area1": 0.5,
+        "area2": 2.0,
+        "e_pts": 1,
+        "f_pts": 1
+    }
+    points = [(-1.0, -1.0), (3.0, 1.0), (0.0, 0.0), (1.0, 3.0), (0.0, 0.0), (1.0, 1.0)]
+    result = lic_14(parameters, points)
+    assert(result)
 
 def test_triangle_lics_rounding_area_to_0():
     """

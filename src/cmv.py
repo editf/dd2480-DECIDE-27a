@@ -436,7 +436,9 @@ def lic_14(parameters, points):
             # Heron's formula
             area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
 
-            return area > max_area
+            if area > max_area:
+                return True
+        return False
     return helper(area1) and not helper(area2)
 
 def __round_to_0(x):
