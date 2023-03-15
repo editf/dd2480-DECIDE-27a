@@ -831,3 +831,47 @@ def test_lic_14_too_few_points():
     points = [(-3.0, -1.0), (-1.0, -3.0), (0.0, 0.0), (-1.0, -1.0)]
     result = lic_14(parameters, points)
     assert(not result)
+
+
+def test_triangle_lics_rounding_area_to_0():
+    """
+    Tests that LICs using Heron's formula (LICs 1, 3, 8, 10, 13, 14) don't raise domain errors due to float precision errors causing negative square root inputs
+    """
+    points = []
+    num_points = 10
+    for i in range(num_points):
+        points.append((i, i)) 
+    points.extend([(0.0, 0.0), (2.0, 0.0), (0.0, 2.0)]) 
+    points.extend([(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (-1.0, -1.0), (0.0, 2.0)])
+    parameters = {
+        "length1": 0.5,      # Length in LICs 0, 7, 12
+        "radius1": 0.5,      # Radius in LICs 1, 8, 13
+        "epsilon": 0.5,      # Deviation from PI in LIC 2,9
+        "area1": 1,        # Area in LICs 3, 10, 14
+        "q_pts": 2,          # Nr consecutive points in LIC 4
+        "quads": 1,          # Nr quadrants in LIC 4
+        "dist": 0,         # Distance in LIC 6
+        "n_pts": 3,          # Nr consecutive points in LIC 6
+        "k_pts": 1,          # Nr int points in LICS 7, 12
+        "a_pts": 1,          # Nr int points in LICS 8, 13
+        "b_pts": 1,          # Nr int points in LICS 8, 13
+        "c_pts": 1,          # Nr int points in LICS 9
+        "d_pts": 1,          # Nr int points in LICS 9
+        "e_pts": 1,          # Nr int points in LICS 10, 14
+        "f_pts": 1,          # Nr int points in LICS 10, 14
+        "g_pts": 1,          # Nr int points in LICS 11
+        "length2": 2,      # Nr int points in LICS 12
+        "radius2": 3,      # Nr int points in LICS 13
+        "area2": 40,        # Nr int points in LICS 14
+    }
+
+    try:
+        lic_1(parameters, points)
+        lic_3(parameters, points)
+        lic_8(parameters, points)
+        lic_10(parameters, points)
+        lic_13(parameters, points)
+        lic_14(parameters, points)
+        assert True
+    except ValueError:
+        assert False

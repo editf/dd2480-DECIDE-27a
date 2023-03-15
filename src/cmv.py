@@ -46,7 +46,7 @@ def lic_1(parameters, points):
         s = (a+b+c)/2
 
         # Heron's formula
-        area = sqrt(s*(s-a)*(s-b)*(s-c))
+        area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
         
         # If the area is zero, then the triangle is degenerate, i.e. a+b=c for a≤b≤c
         if area == 0.0:
@@ -106,7 +106,7 @@ def lic_3(parameters, points):
         b = dist(p1, p3)
         c = dist(p2, p3)
         s = (a+b+c)/2
-        area = sqrt(s*(s-a)*(s-b)*(s-c))
+        area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
         if area > area1:
             return True
     return False
@@ -234,7 +234,7 @@ def lic_8(parameters, points):
         s = (a+b+c)/2
 
         # Heron's formula
-        area = sqrt(s*(s-a)*(s-b)*(s-c))
+        area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
 
         # If the area is zero, then the triangle is degenerate, i.e. a+b=c for a≤b≤c
         if area == 0.0:
@@ -310,7 +310,7 @@ def lic_10(parameters, points):
         b = dist(p1, p3)
         c = dist(p2, p3)
         s = (a+b+c)/2
-        area = sqrt(s*(s-a)*(s-b)*(s-c)) # Heron's formula
+        area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c))) # Heron's formula
         if area > area1:
             return True
     return False
@@ -386,7 +386,7 @@ def lic_13(parameters, points):
             s = (a+b+c)/2
 
             # Heron's formula
-            area = sqrt(s*(s-a)*(s-b)*(s-c))
+            area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
             
             # If the area is zero, then the triangle is degenerate, i.e. a+b=c for a≤b≤c
             if area == 0.0:
@@ -434,7 +434,16 @@ def lic_14(parameters, points):
             s = (a+b+c)/2
 
             # Heron's formula
-            area = sqrt(s*(s-a)*(s-b)*(s-c))
+            area = sqrt(__round_to_0(s*(s-a)*(s-b)*(s-c)))
 
             return area > max_area
     return helper(area1) and not helper(area2)
+
+def __round_to_0(x):
+    """
+    Helper function that makes sure that input to sqrt() is not negative due to floating point errors. Returns 0 if it should be rounded, else returns the same input that was given. 
+    """
+    if abs(x) < 1e-5:
+        return 0.0
+    else:
+        return x
