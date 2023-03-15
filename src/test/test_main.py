@@ -372,3 +372,114 @@ def test_launch_false():
     fuv = [int(i % 2) for i in range(15)]
     result = launch(fuv)
     assert(not result)
+
+def test_decide_true():
+    """
+    Tests that the decide function returns correct values for a set of parameters that should
+    result in a launch decision
+    """
+    num_points = 10
+    points = []
+    for i in range(num_points):
+        points.append((i, i)) # sqrt(2) distance between consecutive points
+    points.extend([(0.0, 0.0), (2.0, 0.0), (0.0, 2.0)]) # triangle with area 2 for LIC 3 
+    points.extend([(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (-1.0, -1.0), (0.0, 2.0)]) # triangle with area 2 for LIC 10, 14, also fulfills quads for LIC 4 and line for LIC 6, as well as points for LIC11 
+    num_points = len(points)
+    parameters = {
+        "length1": 0.5,      # Length in LICs 0, 7, 12
+        "radius1": 0.5,      # Radius in LICs 1, 8, 13
+        "epsilon": 0.5,      # Deviation from PI in LIC 2,9
+        "area1": 1,        # Area in LICs 3, 10, 14
+        "q_pts": 2,          # Nr consecutive points in LIC 4
+        "quads": 1,          # Nr quadrants in LIC 4
+        "dist": 0,         # Distance in LIC 6
+        "n_pts": 3,          # Nr consecutive points in LIC 6
+        "k_pts": 1,          # Nr int points in LICS 7, 12
+        "a_pts": 1,          # Nr int points in LICS 8, 13
+        "b_pts": 1,          # Nr int points in LICS 8, 13
+        "c_pts": 1,          # Nr int points in LICS 9
+        "d_pts": 1,          # Nr int points in LICS 9
+        "e_pts": 1,          # Nr int points in LICS 10, 14
+        "f_pts": 1,          # Nr int points in LICS 10, 14
+        "g_pts": 1,          # Nr int points in LICS 11
+        "length2": 2,      # Nr int points in LICS 12
+        "radius2": 3,      # Nr int points in LICS 13
+        "area2": 40,        # Nr int points in LICS 14
+    }
+
+    lcm = []
+    puv = []
+    for i in range(15):
+        puv.append([True]*15)
+        lcm.append(["ANDD"]*15)
+    
+    launch_res, cmv_res, pum_res, fuv_res = decide(num_points, points, parameters, lcm, puv)
+
+    # all LICs should be true and so all ANDs of LICs should be true as well, PUM should be all true
+    for i in range(15):
+        assert cmv_res[i]
+        assert fuv_res[i]
+    
+    for i in range(15):
+        for j in range(15):
+            assert pum_res[i][j]
+
+    assert launch_res 
+
+def test_decide_false():
+    """
+    Tests that the decide function returns correct values when no launch decision should be made
+    """
+    num_points = 10
+    points = []
+    for i in range(num_points):
+        points.append((i, i)) # sqrt(2) distance between consecutive points
+    points.extend([(0.0, 0.0), (2.0, 0.0), (0.0, 2.0)]) # triangle with area 2 for LIC 3 
+    points.extend([(0.0, 0.0), (-1.0, -1.0), (2.0, 0.0), (-1.0, -1.0), (0.0, 2.0)]) # triangle with area 2 for LIC 10, 14, also fulfills quads for LIC 4 and line for LIC 6, as well as points for LIC11 
+    num_points = len(points)
+    parameters = {
+        "length1": 0.5,      # Length in LICs 0, 7, 12
+        "radius1": 0.5,      # Radius in LICs 1, 8, 13
+        "epsilon": 0.5,      # Deviation from PI in LIC 2,9
+        "area1": 1,        # Area in LICs 3, 10, 14
+        "q_pts": len(points),          # Nr consecutive points in LIC 4
+        "quads": 3,          # Nr quadrants in LIC 4
+        "dist": 0,         # Distance in LIC 6
+        "n_pts": 3,          # Nr consecutive points in LIC 6
+        "k_pts": 1,          # Nr int points in LICS 7, 12
+        "a_pts": 1,          # Nr int points in LICS 8, 13
+        "b_pts": 1,          # Nr int points in LICS 8, 13
+        "c_pts": 1,          # Nr int points in LICS 9
+        "d_pts": 1,          # Nr int points in LICS 9
+        "e_pts": 1,          # Nr int points in LICS 10, 14
+        "f_pts": 1,          # Nr int points in LICS 10, 14
+        "g_pts": 1,          # Nr int points in LICS 11
+        "length2": 2,      # Nr int points in LICS 12
+        "radius2": 3,      # Nr int points in LICS 13
+        "area2": 40,        # Nr int points in LICS 14
+    }
+
+    lcm = []
+    puv = []
+    for i in range(15):
+        puv.append([True]*15)
+        lcm.append(["ANDD"]*15)
+    
+    launch_res, cmv_res, pum_res, fuv_res = decide(num_points, points, parameters, lcm, puv)
+
+    # LIC 4 should be false, all others should be true
+    for i in range(15): 
+        if i != 4:
+            assert cmv_res[i]
+        else:
+            assert not cmv_res[i]
+        assert not fuv_res[i] # because of all ANDs in LCM
+    
+    for i in range(15):
+        for j in range(15):
+            if i != 4 and j != 4:
+                assert pum_res[i][j]
+            else: # all ANDs in LCM so anything involving LIC 4 is false
+                assert not pum_res[i][j]
+
+    assert not launch_res 
