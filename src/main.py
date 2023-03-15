@@ -1,18 +1,20 @@
 from ast import literal_eval
 from math import pi
+from src.cmv import cmv
+from src.pum import pum
+from src.fuv import fuv
 
 def decide(num_points, points, parameters, lcm, puv):
-    # TODO: Implement function
-    launch = False
-    cmv = {}
-    pum = {}
-    fuv = {}
+    cmv_res = cmv(parameters, points)
+    pum_res = pum(lcm, cmv_res)
+    fuv_res = fuv(puv, pum_res)
+    launch_res = launch(fuv_res)
     
-    output = (launch, cmv, pum, fuv)
+    output = (launch_res, cmv_res, pum_res, fuv_res)
     return output
 
-def launch(fuv):
-    return fuv == [True] * 15
+def launch(fuv_res):
+    return fuv_res == [True] * 15
 
 def main():
     num_points = int(input())
@@ -47,8 +49,8 @@ def main():
 
     validate_input(num_points, points, parameters, lcm)
 
-    launch, cmv, pum, fuv = decide(num_points, points, parameters, lcm, puv)
-    if launch:
+    launch_res, cmv_res, pum_res, fuv_res = decide(num_points, points, parameters, lcm, puv)
+    if launch_res:
         print("YES")
     else:
         print("NO")
