@@ -11,6 +11,9 @@ def decide(num_points, points, parameters, lcm, puv):
     output = (launch, cmv, pum, fuv)
     return output
 
+def launch(fuv):
+    return fuv == [True] * 15
+
 def main():
     num_points = int(input())
     points = list()
