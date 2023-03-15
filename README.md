@@ -29,8 +29,7 @@ The group is currently in the *In use* stage. The criteria for the earlier stage
 ## Contributions
 This project was developed as a part of the course DD2480 at the KTH Royal Institute of Technology by group 27.
 
-The `lic_0`, `lic_1`, `lic_2`, `lic_5`, `pum` and `launch` functions and their unit tests were implemented by Elias.
-The `lic_3`, `lic_4`, `lic_6`, `lic_7`, `fuv` and `validate_input` functions and their unit tests were implemented by Edit.
+The `lic_0`, `lic_1`, `lic_2`, `lic_5`, `lic_8`, `lic_11`, `lic_13`, `lic_14`, `pum` and `launch` functions and their unit tests were implemented by Elias.
+The `lic_3`, `lic_4`, `lic_6`, `lic_7`, `lic_9`, `lic_10`, `lic_12`, `fuv` and `validate_input` functions and their unit tests were implemented by Edit.
 The `main` function was written collaborately by the group as a whole.
-Contributions from the remaining group members will be added once they are pushed and merged.
 
