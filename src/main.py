@@ -1,8 +1,8 @@
 from ast import literal_eval
 from math import pi
-from src.cmv import cmv
-from src.pum import pum
-from src.fuv import fuv
+from cmv import cmv
+from pum import pum
+from fuv import fuv
 
 def decide(num_points, points, parameters, lcm, puv):
     cmv_res = cmv(parameters, points)
